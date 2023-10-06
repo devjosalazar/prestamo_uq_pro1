@@ -1,17 +1,16 @@
 package co.edu.uniquindio.prestamo.model;
 
-public class Cliente {
+public class Empleado {
     private String nombre;
     private String apellido;
     private String cedula;
     private int edad;
-
     PrestamoUq ownedByPrestamoUq;
 
-    public Cliente() {
+    public Empleado() {
     }
 
-    public Cliente(String nombre, String apellido, String cedula, int edad) {
+    public Empleado(String nombre, String apellido, String cedula, int edad) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.cedula = cedula;
@@ -60,11 +59,11 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" +
+        return "Empleado{" +
                 "nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", cedula='" + cedula + '\'' +
-                ", edad=" + edad +
+                ", edad='" + edad + '\'' +
                 '}';
     }
 }
