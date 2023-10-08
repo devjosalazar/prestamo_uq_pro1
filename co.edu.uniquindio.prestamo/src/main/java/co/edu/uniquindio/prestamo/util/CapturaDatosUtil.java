@@ -65,7 +65,7 @@ public class CapturaDatosUtil {
      * @param mensaje
      * @return
      */
-    private static int leerEntero(String mensaje) {
+    public static int leerEntero(String mensaje) {
         int dato = 0;
         String captura = "";
         System.out.println(mensaje);
