@@ -10,6 +10,7 @@ public class PrestamoUq {
     private String nombre;
 
     List<Cliente> listaClientes = new ArrayList<>();
+    List<Empleado> listaEmpleados = new ArrayList<>();
 
     public PrestamoUq() {
     }
