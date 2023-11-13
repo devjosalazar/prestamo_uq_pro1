@@ -1,16 +1,21 @@
 package co.edu.uniquindio.prestamo.model;
 
+import co.edu.uniquindio.prestamo.services.IPrestamoUQ;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static co.edu.uniquindio.prestamo.constantes.PrestamoConstantes.*;
 
-public class PrestamoUq {
+public class PrestamoUq implements IPrestamoUQ {
 
     private String nombre;
 
     List<Cliente> listaClientes = new ArrayList<>();
     List<Empleado> listaEmpleados = new ArrayList<>();
+    List<Objeto> listaObjetos = new ArrayList<>();
+    List<Prestamo> listaPrestamos = new ArrayList<>();
 
     public PrestamoUq() {
     }
@@ -29,6 +34,18 @@ public class PrestamoUq {
 
     public List<Cliente> getListaClientes() {
         return listaClientes;
+    }
+
+    public List<Empleado> getListaEmpleados() {
+        return listaEmpleados;
+    }
+
+    public List<Prestamo> getListaPrestamos() {
+        return listaPrestamos;
+    }
+
+    public List<Objeto> getListaObjetos() {
+        return listaObjetos;
     }
 
     public void setListaClientes(List<Cliente> listaClientes) {
@@ -170,4 +187,87 @@ public class PrestamoUq {
             return false;
         }
     }
+
+    @Override
+    public boolean crearObjeto(String idObjeto, String descripcion) {
+        return false;
+    }
+
+
+    @Override
+    public boolean crearPrestamo(String numeroPrestamo,
+                                 Date fechaPrestamo,
+                                 Date fechaEntrega,
+                                 String descripcion,
+                                 String cedulaCliente,
+                                 String cedulaEmpleado,
+                                 String idObjeto) {
+        //1. obtener los elementos con que se van asociar
+        Cliente cliente = obtenerCliente(cedulaCliente);
+        Empleado empleado = obtenerEmpleado(cedulaEmpleado);
+        Objeto objeto = obtenerObjeto(idObjeto);
+
+        //2.Validar elementos
+        if(cliente == null || empleado == null || objeto == null){
+            return false;
+        }
+
+        //3. crear el prestamo con los datos respectivos
+        Prestamo prestamo = new Prestamo();
+        prestamo.setNumeroPrestamo(numeroPrestamo);
+        prestamo.setFechaPrestamo(fechaPrestamo);
+        prestamo.setFechaEntrega(fechaEntrega);
+        prestamo.setDescripcion(descripcion);
+
+        //4. Asociar con elementos correspondientes
+        prestamo.setClienteAsociado(cliente);
+        prestamo.setEmpleadoAsociado(empleado);
+        prestamo.getListaObjetosAsociados().add(objeto);
+
+        //5. Adicionar prestamo a la lista de prestamos
+        getListaPrestamos().add(prestamo);
+
+        //6.Retornar respuesta
+        return true;
+    }
+
+    @Override
+    public boolean eliminarPrestamo(String numeroPrestamo) {
+        return false;
+    }
+
+    @Override
+    public boolean actualizarPrestamo(String numeroPrestamoActual, String numeroPrestamo, Date fechaPrestamo, Date fechaEntrega, String descripcion) {
+        return false;
+    }
+
+    @Override
+    public Prestamo obtenerPrestamo(String numeroPrestamo) {
+        return null;
+    }
+
+
+    public Objeto obtenerObjeto(String idObjeto) {
+        Objeto objetoEncontrado = null;
+        for (Objeto objeto : getListaObjetos()) {
+            if (objeto.getIdObjeto().equalsIgnoreCase(idObjeto)){
+                objetoEncontrado = objeto;
+                break;
+            }
+        }
+
+        return objetoEncontrado;
+    }
+
+    public Empleado obtenerEmpleado(String cedulaEmpleado) {
+        Empleado empleadoEncontrado = null;
+        for (Empleado empleado: getListaEmpleados()) {
+            if (empleado.getCedula().equalsIgnoreCase(cedulaEmpleado)){
+                empleadoEncontrado = empleado;
+            }
+        }
+
+        return empleadoEncontrado;
+    }
+
 }
